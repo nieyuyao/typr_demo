@@ -127,7 +127,9 @@ class CorjlCurvedText extends fabric.IText {
     curved.initTySh(x, y, txt);
     let obj = {
       warpStyle: 'warpCircle2',
-      warpValue: 100,
+      warpValue: 0,
+      warpPerspective: 50,
+      warpPerspectiveOther: 0
     }
     curved.onChangeTySh(obj);
     const fonts: any = {};

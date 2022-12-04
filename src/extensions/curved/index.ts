@@ -38,6 +38,8 @@ class Curved {
       this.tySh.ct.warpStyle.v.warpStyle = obj.warpStyle;
     if (obj.warpValue)
       this.tySh.ct.warpValue.v = obj.warpValue;
+      this.tySh.ct.warpPerspective.v = obj.warpPerspective;
+      this.tySh.ct.warpPerspectiveOther.v = obj.warpPerspectiveOther;
     this.tySh.data.EngineDict.Rendered.Shapes = {
       WritingDirection: 0,
       Children: [
@@ -80,25 +82,6 @@ class Curved {
   public startCurved(fonts: any) {
     const curves = new Curves(this.tySh.data, fonts);
     return this.curvedText(curves, this.tySh)
-    // , F = u.rect;
-    // if (n.Lq.ZE(V.ct))
-    //     V.Wr = new R;
-    // else {
-    //     if (NK.gW(V.mp) == 1) {
-    //         var m = NK.x$(V.mp)
-    //           , y = u.Wr.y;
-    //         V.Wr = new R(0,y,m[2] - m[0],m[3] - m[1] - y)
-    //     } else {
-    //         V.Wr = u.Wr
-    //     }
-    // }
-    // var z = this.hF.rect;
-    // this.hF.rect = u.rect;
-    // this.hF.buffer = u.re;
-    // this.hF.u();
-    // O.QG();
-    // O.u(O.root.fn(u.rect.UJ(z), O, O._.indexOf(this.hF)));
-    // return !0
   }
 
 
@@ -109,53 +92,6 @@ class Curved {
       path,
       rect
     }
-    // return path;
-    // let p = O.zg(), y;
-    // if (p.x == Infinity || p.zk())
-    //   return {
-    //     re: n.U(0),
-    //     rect: new R,
-    //     Wr: new R
-    //   };
-    // let V = O.zg()
-    //   , path = OP.Hf(O, i)
-    //   , u = n.p_iG(path.b);
-    // if (u.zk())
-    //   return {
-    //     re: n.U(0),
-    //     rect: new R,
-    //     Wr: new R
-    //   };
-
-    // console.log(u)
-
-    // var F = f.L("canvas", "");
-    // F.width = u.m;
-    // F.height = u.Q;
-    // var m = F.getContext("2d");
-    // m.translate(-u.x, -u.y);
-    // OP.fju(E, m);
-    // if (O.xC.length != 0) {
-    //     var z = m.getImageData(0, 0, u.m, u.Q);
-    //     y = new Uint8Array(z.data.buffer)
-    // } else
-    //     y = n.U(u.d() * 4);
-    // return {
-    //     re: y,
-    //     rect: u,
-    //     Wr: V
-    // }
-    // const F = document.getElementById("canvas");
-    // @ts-ignore
-    // F.width = 800;
-    // @ts-ignore
-    // F.height = canvas.height;
-    // let ctx = canvas.getContext("2d");
-    // console.log(ctx)
-    // TyprU.pathToContext({
-    //   crds: path.b,
-    //   cmds: path.J
-    // }, ctx)
   }
 
   public rederChar(input: any) {

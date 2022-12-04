@@ -517,6 +517,12 @@ class Warp {
     }
   }
   
+  /**
+   * 
+   * @param O 网格
+   * @param i 竖直扭曲
+   * @param p 水平扭曲
+   */
   public Lq_fnj(O: any, i: any, p: any) {
     var V = [];
     for (var E = 0; E < 4; E++)
@@ -559,26 +565,14 @@ class Warp {
       }
     var N = O[0]
       , T = O[1]
-      , b = O[8]
-      , g = O[9]
-      , L = O[16]
-      , a = O[17]
       , x = O[24]
       , K = O[25]
       , U = O[6]
       , Y = O[7]
-      , $ = O[14]
-      , e = O[15]
-      , o = O[22]
-      , d = O[23]
       , Z = O[30]
       , I = O[31]
       , S = U - N
       , H = Y - T
-      , q = $ - b
-      , w = e - g
-      , C = o - L
-      , Q = d - a
       , t = Z - x
       , X = I - K;
     for (var y = 0; y < 4; y++) {

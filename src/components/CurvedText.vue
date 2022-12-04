@@ -78,6 +78,7 @@ export default {
         left: 200,
         fontSize: 32,
         fontFamily: 'DejaVuSans',
+        fontWeight: 'bold',
         textAlign: 'center'
       })
       // @ts-ignore
