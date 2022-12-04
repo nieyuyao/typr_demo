@@ -17,6 +17,8 @@ export class PathCurves {
       var E = Tysh.getRect(tySh, curves)
         , u = warp.warpStyle(tySh.ct, E);
       warp.apply(u, pathCurves.b, E)
+      // @ts-ignore
+      window.warpPoints = u;
     }
     var F = tySh.F;
     warp.mapPathCurves(pathCurves.b, F, pathCurves.b);

@@ -73,7 +73,7 @@ export default {
       // @ts-ignore
       // load("fonts/LiberationSans-Bold.ttf", fontLoaded);
 
-      const text1 = new fabric.CText('nguyen anh van', {
+      const text1 = new fabric.CJCurvedText('nguyen anh van', {
         top: 200,
         left: 200,
         fontSize: 32,
@@ -84,6 +84,38 @@ export default {
       canvas.value.add(text1);
       canvas.value.requestRenderAll();
       canvas.value.setActiveObject(canvas.value.getObjects()[0])
+
+      setTimeout(() => {
+        // @ts-ignore
+        const warpPoints = window.warpPoints as Array<number>
+
+        if (!warpPoints) {
+          return
+        }
+
+        for (let i = 0; i < 4; i++) {
+          for (let j = 0; j < 4; j++) {
+            const x = warpPoints[2 * (4 * i + j)]
+            const y = warpPoints[2 * (4 * i + j) + 1]
+            if (j <= 2) {
+              const rightX = warpPoints[2 * (4 * i + j + 1)]
+              const rightY = warpPoints[2 * (4 * i + j + 1) + 1]
+              const line = new fabric.Line([x + 220, y + 280, rightX + 220, rightY + 280], {
+                stroke: 'red',
+              });
+              canvas.value.add(line)
+            }
+            if (i <= 2) {
+              const bottomX = warpPoints[2 * (4 * (i + 1) + j)]
+              const bottomY = warpPoints[2 * (4 * (i + 1) + j) + 1]
+              const line = new fabric.Line([x + 220, y + 280, bottomX + 220, bottomY + 280], {
+                stroke: 'red',
+              });
+              canvas.value.add(line)
+            }
+          }
+        }
+      }, 2000)
     });
     return {
       uppercase,

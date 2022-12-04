@@ -61,7 +61,6 @@ const CText = fabric.util.createClass(fabric.IText, {
       // path.left += 100;
       // path.segmentsInfo[6].x += 10;
       // @ts-ignore
-      console.log(path)
       path.width += this.fontSize
       path.height += this.fontSize
       // @ts-ignore
@@ -144,7 +143,6 @@ const CText = fabric.util.createClass(fabric.IText, {
   },
 
   _render(ctx: CanvasRenderingContext2D) {
-    console.log(123)
     this._uppercase(this.originalText || '');
     this._setCurvedText(ctx);
     this.callSuper('_render', ctx);

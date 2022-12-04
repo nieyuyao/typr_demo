@@ -52,6 +52,14 @@ class Warp {
     }
   }
   ;
+
+  /**
+   * 根据网格变形来计算字体边缘坐标
+   * @param O 
+   * @param i 
+   * @param p 
+   * @param V 
+   */
   public dW(O: any, i: any, p: any, V: any) {
     this.Ki(V, 0, p);
     this.Ki(V, 4, i);
@@ -241,6 +249,16 @@ class Warp {
     return m
   }
   ;
+  /**
+   * 
+   * @param rect 矩形
+   * @param i 类型
+   * @param p 方向
+   * @param V warpValue
+   * @param E 水平弯曲
+   * @param u 竖直弯曲
+   * @returns 
+   */
   public calculatorWarpStyle(rect: Rect, i: any, p: any, V: any, E: any, u: any) {
     var F = this.Bc_U(rect.x, rect.y, rect.w, rect.h);
     if (i == "warpNone")
@@ -275,6 +293,14 @@ class Warp {
     return F
   }
   ;
+  /**
+   * @param O 剖分点数组
+   * @param rect 矩形
+   * @param p 类型
+   * @param V warpValue
+   * @param E 水平弯曲
+   * @param u 竖直弯曲
+   */
   public calculatorWarp(O: any, rect: Rect, p: any, V: any, E: any, u: any) {
     for (var F = 0; F < 4; F++) {
       for (var m = 0; m < 4; m++) {
@@ -284,46 +310,66 @@ class Warp {
           , W = z
           , G = _;
         if (V != 0) {
+          // 矩形中心坐标
           var J = rect.w / 2
             , v = rect.h / 2;
+          // 相对中心的坐标
           W -= J;
           G -= v;
+          var N = Math.abs(V);
+          var T = Math.tan((1 - N) * Math.PI / 2);
+          var b = Math.sqrt(T * T + 1);
+          var a = J * b;
+          var g = Math.atan2(1, T);
+          var K = Math.cos(g);
+          var U = Math.sin(g);
+          var x = J * b + rect.h;
           var j = W
             , D = W
             , r = -v
             , P = v
-            , N = Math.abs(V)
-            , T = Math.tan((1 - N) * Math.PI / 2)
-            , b = Math.sqrt(T * T + 1)
-            , g = Math.atan2(1, T)
+            // W为距矩形中心的水平距离，L的量纲是角度
             , L = W / J * g
-            , a = J * b
-            , x = J * b + rect.h
-            , K = Math.cos(g)
-            , U = Math.sin(g)
+            // L = -PI / 2 
             , Y = (4 - K) * (1 / 3)
+            // Y = 4 / 3
             , $ = (1 - K) * (3 - K) / (3 * U)
+            // $ = 1
             , e = -T * J + Y * a;
-            if (p == "warpCircle") {
-              j = Math.sin(L) * x;
-              r = (T * J - Math.cos(g) * x + v);
-              D = Math.sin(L) * a;
-              P = (T * J - Math.cos(g) * a + v);
-              if (m == 1 || m == 2) {
-                j = m == 1 ? (-$ * x) : ($ * x);
-                D = m == 1 ? (-$ * a) : ($ * a);
-                r = (T * J + v - Y * x);
-                P = (T * J + v - Y * a);
-              }
-              // if (V < 0) {
-              //   var o = j;
-              //   j = D;
-              //   D = o;
-              //   o = r;
-              //   r = -P;
-              //   P = -o
-              // }
+            // e = 2 * w / 3
+          if (p === 'warpCircle2') {
+            j = Math.sin(L) * x;
+            D = Math.sin(L) * a;
+            r = a + v - x * Math.cos(L)
+            P = a + v - a * Math.cos(L);
+            if (m === 1 || m === 2) {
+              var dd = 2 * Math.sin(g) / (1 + 2 * Math.cos(g))
+              j = (m === 1 ? -1 : 1) * (x * dd / 2)
+              D = (m === 1 ? -1 : 1) * (a * dd / 2)
+              r = v + a - x * (Math.cos(g) +  Math.sin(g) * dd)
+              P = v + a - a * (Math.cos(g) +  Math.sin(g) * dd)
             }
+          }
+          if (p == "warpCircle") {
+            j = Math.sin(L) * x;
+            r = (T * J - Math.cos(g) * x + v);
+            D = Math.sin(L) * a;
+            P = (T * J - Math.cos(g) * a + v);
+            if (m == 1 || m == 2) {
+              j = m == 1 ? (-$ * x) : ($ * x);
+              D = m == 1 ? (-$ * a) : ($ * a);
+              r = (T * J + v - Y * x);
+              P = (T * J + v - Y * a);
+            }
+            // if (V < 0) {
+            //   var o = j;
+            //   j = D;
+            //   D = o;
+            //   o = r;
+            //   r = -P;
+            //   P = -o
+            // }
+          }
           if (p == "warpArc") {
             j = Math.sin(L) * x;
             r = T * J - Math.cos(g) * x + v;
@@ -382,7 +428,8 @@ class Warp {
             P = r + 2 * v
           }
           var d = (G + v) / rect.h;
-          W = j + d * (D - j);
+          // 比例
+          W = j + d * (D - j)
           G = r + d * (P - r);
           if (p == "warpWave") {
             if (F == 0)
@@ -463,7 +510,7 @@ class Warp {
           G += v
         }
         z = W,
-          _ = G;
+        _ = G;
         O[y] = z + rect.x;
         O[y + 1] = _ + rect.y
       }

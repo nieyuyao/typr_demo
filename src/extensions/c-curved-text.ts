@@ -126,7 +126,7 @@ class CorjlCurvedText extends fabric.IText {
     let txt = new Txt();
     curved.initTySh(x, y, txt);
     let obj = {
-      warpStyle: 'warpCircle',
+      warpStyle: 'warpCircle2',
       warpValue: 100,
     }
     curved.onChangeTySh(obj);
@@ -148,7 +148,6 @@ class CorjlCurvedText extends fabric.IText {
       curved.rederChar(input);
       const { path, rect } = curved.startCurved(fonts);
       if (path && path.b.length > 0) {
-        console.log(path, rect)
         // const can = document.createElement('canvas');
         // can.width = rect.w;
         // can.height = rect.h;
