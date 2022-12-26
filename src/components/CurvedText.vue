@@ -14,8 +14,6 @@
 import { computed, onMounted, ref } from "vue";
 import { fabric } from "fabric";
 import { CorjlFabricCanvas } from "@/extensions";
-import TyprVue from "./Typr.vue";
-import { Typr, TyprU } from "typr-ts";
 
 export default {
   setup() {
@@ -70,10 +68,7 @@ export default {
     onMounted(() => {
       canvas.value.setWidth(800);
       canvas.value.setHeight(800);
-      // @ts-ignore
-      // load("fonts/LiberationSans-Bold.ttf", fontLoaded);
-
-      const text1 = new fabric.CJCurvedText('nguyen anh van', {
+      const text1 = new fabric.CJCurvedText('请输入文字', {
         top: 200,
         left: 200,
         fontSize: 32,

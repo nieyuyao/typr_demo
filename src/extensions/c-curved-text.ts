@@ -56,7 +56,6 @@ class CorjlCurvedText extends fabric.IText {
     }
     // @ts-ignore
     super.initialize(text, options);
-    console.log(text)
     if (this.canvas) this.canvas.requestRenderAll();
   }
 
@@ -66,17 +65,6 @@ class CorjlCurvedText extends fabric.IText {
       _text = text.toLocaleUpperCase();
     }
     this.set('text', _text);
-  }
-  setSpacing(ctx: CanvasRenderingContext2D) {
-    // this.spacing = 0;
-    // const circum = Math.floor(2 * Math.PI * this.radius);
-    // ctx.font = this.fontSize + 'px ' + this.fontFamily;
-    // // @ts-ignore
-    // const char = this.text.length;
-    // // @ts-ignore
-    // const textWidth = Math.ceil(ctx.measureText(this.text).width + char);
-    // const diff = Math.ceil(circum - textWidth);
-    // this.spacing = Math.ceil(diff / char);
   }
 
   isReloadText() {
@@ -116,64 +104,41 @@ class CorjlCurvedText extends fabric.IText {
     }
   }
 
+  // 复写Fabric的方法
   async _renderChar(method: any, ctx: CanvasRenderingContext2D, lineIndex: any, charIndex: any, _char: any, left: any, top: any) {
     // load font
     ctx.save();
-    console.log('_render')
-    const font = await curved.load("fonts/DejaVuSans.otf");
+    const font = await curved.load("fonts/Siyuan.ttf");
     const x = this.left || 0;
     const y = this.top || 0;
     let txt = new Txt();
     curved.initTySh(x, y, txt);
     let obj = {
-      warpStyle: 'warpCircle2',
-      warpValue: 0,
-      warpPerspective: 50,
+      warpStyle: 'warpCircle',
+      warpValue: 100,
+      warpPerspective: 0,
       warpPerspectiveOther: 0
     }
     curved.onChangeTySh(obj);
     const fonts: any = {};
     fonts[this.fontFamily || 'DejaVuSans'] = font;
-
-    // let input = {
-    //   selectionStart: _char.length,
-    //   value: _char
-    // }
     let input = {
       selectionStart: _char.length,
       value: _char
     }
-    
-    // for (let i = 0; i < _char.length; i++) {
-      // input.selectionStart++;
-      // input.value += _char[i];
-      curved.rederChar(input);
-      const { path, rect } = curved.startCurved(fonts);
-      if (path && path.b.length > 0) {
-        // const can = document.createElement('canvas');
-        // can.width = rect.w;
-        // can.height = rect.h;
-        // const ct = can.getContext("2d");
-        // // @ts-ignore
-        // ct.translate(-(rect.x), -(rect.y));
-        this.width = rect.w;
-        this.height = rect.h;
-        ctx.translate(-(rect.x + rect.w / 2), -(rect.y + rect.h / 2));
-        this.pathToContext({
-          crds: path.b,
-          cmds: path.J
-        }, ctx);
-        ctx.restore();
-        // if (this.canvas) this.canvas.renderAll();
-        // @ts-ignore
-        // const data = ctx.getImageData(0, 0, this.width, this.height);
-        // ctx.putImageData(data, 0, 0);
-      // }
-
+    curved.rederChar(input);
+    const { path, rect } = curved.startCurved(fonts);
+    if (path && path.b.length > 0) {
+      this.width = rect.w;
+      this.height = rect.h;
+      ctx.translate(-(rect.x + rect.w / 2), -(rect.y + rect.h / 2));
+      this.pathToContext({
+        crds: path.b,
+        cmds: path.J
+      }, ctx);
+      ctx.restore();
       if (this.canvas) this.canvas.renderAll();
     }
-
-
   }
 
   toObject(propertiesToInclude?: string[]): any {

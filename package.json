@@ -9,7 +9,6 @@
   },
   "dependencies": {
     "fabric": "github:anhvan-nguyen/fabric.js",
-    "opentype.js": "^1.3.3",
     "typr-ts": "^1.1.5",
     "vue": "^3.0.0"
   },

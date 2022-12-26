@@ -1,7 +1,7 @@
 import { Loca } from './loca';
 import Tysh from './tysh';
 import { Rect } from './rect';
-import { Typr, TyprU } from 'typr-ts';
+import { TyprU } from 'typr-ts';
 import * as UnicodeBidirectional from 'unicode-bidirectional';
 import { Char } from './char';
 import tysh from './tysh';
@@ -16,14 +16,9 @@ export class Curves {
   public rd: any;
   public loca: any;
 
-  // public space: any;
-  // public enter: any
   public start: any
   public end: any;
-  // public NU: any;
   public lineHeight: any;
-  // public TB: any;
-  // public Ti: any;
 
   constructor(O: any, fonts: any) {
     this.init(O, fonts);
@@ -123,10 +118,7 @@ export class Curves {
         P = J.sTypoAscender;
       if (P == 0)
         P = v.ascender;
-      // _char.NU = P * scale;
       _char.lineHeight = (v.ascender - v.descender) * scale;
-      // _char.TB = v.ascender * scale;
-      // _char.Ti = (-v.descender + v.lineGap) * scale;
       if (_char.styles.AutoLeading == !1)
         _char.lineHeight = _char.styles.Leading;
       this.listChar.push(_char)
@@ -170,7 +162,6 @@ export class Curves {
       , j = 0;
     for (let i = length; i < runLengthArray; i++) {
       if (listChar[i] == null)
-        console.log(i, length, runLengthArray, listChar);
       var val = listChar[i].value
         , _code = val.charCodeAt(0);
       if (_code == 32) {
@@ -354,21 +345,15 @@ export class Curves {
   }
 
   public getCharSpaceAndEnter(listChar: any, n: any, m: any) {
-    // this.space = m == 1 && listChar[n].value == " ";
-    // this.enter = m == 1 && listChar[n].value == "\n";
     this.start = n;
     this.end = n + m;
     this.rect = new Rect;
     this.rd = new Rect;
     this.loca = new Loca(0, 0);
-    // this.NU = 0;
     this.lineHeight = 0;
-    // this.TB = 0;
-    // this.Ti = 0;
     var u = 0
     if (m == 0) {
       this.lineHeight = listChar[n].lineHeight;
-      // this.NU = listChar[n].NU;
       this.rect = new Rect(0, -listChar[n].lineHeight, 0, listChar[n].lineHeight)
     }
     for (var i = 0; i < m; i++) {

@@ -1,11 +1,9 @@
-import { Typr, TyprU } from 'typr-ts';
+import { Typr } from 'typr-ts';
 import warp from './external/warp';
 import Tysh from './external/tysh';
 import { Curves } from './external/curves';
 import { PathCurves } from './external/path-curves';
-import { Rect } from './external/rect';
 import { Txt } from './external/txt';
-import { Path } from './external/path';
 
 class Curved {
   public tySh: any = null;
@@ -83,7 +81,6 @@ class Curved {
     const curves = new Curves(this.tySh.data, fonts);
     return this.curvedText(curves, this.tySh)
   }
-
 
   private curvedText(curves: Curves, tySh: any) {
     let path = PathCurves.getPathCurves(curves, tySh);
