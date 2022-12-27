@@ -13,16 +13,16 @@
 <script lang="ts">
 import { computed, onMounted, ref } from "vue";
 import { fabric } from "fabric";
-import { CorjlFabricCanvas } from "@/extensions";
+import "@/extensions";
 
 export default {
   setup() {
-    let _canvas: CorjlFabricCanvas | null = null;
-    const canvas = computed<CorjlFabricCanvas>(() => {
+    let _canvas: fabric.Canvas | null = null;
+    const canvas = computed<fabric.Canvas>(() => {
       if (!_canvas) {
         fabric.Object.prototype.transparentCorners = false;
         fabric.Object.prototype.cornerStrokeColor = "#0066ff";
-        _canvas = new CorjlFabricCanvas("canvas", {
+        _canvas = new fabric.Canvas("canvas", {
           preserveObjectStacking: true,
           fireRightClick: true,
           stopContextMenu: true,
@@ -30,7 +30,7 @@ export default {
           targetFindTolerance: 10,
         });
       }
-      return _canvas as CorjlFabricCanvas;
+      return _canvas as fabric.Canvas;
     });
     const uppercase = ref(false);
     const curved = ref(false);
@@ -68,7 +68,7 @@ export default {
     onMounted(() => {
       canvas.value.setWidth(800);
       canvas.value.setHeight(800);
-      const text1 = new fabric.CJCurvedText('请输入文字', {
+      const text1 = new fabric.CJCurvedText('请输入文字把', {
         top: 200,
         left: 200,
         fontSize: 32,

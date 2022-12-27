@@ -126,7 +126,7 @@ class CorjlCurvedText extends fabric.IText {
       selectionStart: _char.length,
       value: _char
     }
-    curved.rederChar(input);
+    curved.renderChar(input);
     const { path, rect } = curved.startCurved(fonts);
     if (path && path.b.length > 0) {
       this.width = rect.w;

@@ -37,6 +37,12 @@ class Warp {
   }
   ;
 
+  /**
+   * 根据变形后的网格调整点集坐标
+   * @param O 
+   * @param i 
+   * @param p 
+   */
   public apply(O: any, i: any, p: any) {
     var V = p.x
       , E = p.y
@@ -44,6 +50,7 @@ class Warp {
       , F = 1 / p.h
       , m = this.tC;
     for (var y = 0; y < i.length; y += 2) {
+      // uv坐标
       var z = (i[y] - V) * u
         , _ = (i[y + 1] - E) * F;
       this.dW(O, z, _, m);
@@ -54,10 +61,10 @@ class Warp {
   ;
 
   /**
-   * 根据网格变形来计算字体边缘坐标
-   * @param O 
-   * @param i 
-   * @param p 
+   * 根据网格变形来计算字体轮廓坐标
+   * @param O 网格坐标
+   * @param i 点的x坐标
+   * @param p 点的y坐标
    * @param V 
    */
   public dW(O: any, i: any, p: any, V: any) {

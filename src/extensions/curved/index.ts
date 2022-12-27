@@ -91,9 +91,10 @@ class Curved {
     }
   }
 
-  public rederChar(input: any) {
+  public renderChar(input: any) {
     if (this.tySh == null)
       return;
+    // selectionStart => 文本的长度
     let i = input.selectionStart
       , p = this.tySh
       , V = Tysh.getText(p.data)

@@ -1,5 +1,4 @@
 import { Loca } from './loca';
-import Tysh from './tysh';
 import { Rect } from './rect';
 import { TyprU } from 'typr-ts';
 import * as UnicodeBidirectional from 'unicode-bidirectional';
@@ -25,18 +24,18 @@ export class Curves {
   }
 
   public init(data: any, fonts: any) {
-    var box = Tysh.getBoxBounds(data);
+    var box = tysh.getBoxBounds(data);
     if (box)
       box = new Rect(box[0], box[1], box[2], box[3]);
     this._curves = [];
     this.rect = new Rect;
     this.listChar = [];
-    var text = Tysh.getText(data)
+    var text = tysh.getText(data)
     var glyphs: any = {};
     for (var i = 0; i < text.length; i++) {
       let _char: Char = {
         value: text.charAt(i),
-        styles: Tysh.getStyleSheet(data, i),
+        styles: tysh.getStyleSheet(data, i),
         glyph: 0,
         path: null,
         font: null,
@@ -44,10 +43,7 @@ export class Curves {
         rd: new Rect,
         loca: new Loca(0, 0),
         scale: new Loca(0, 0),
-        // NU: 0,
         lineHeight: 0,
-        // TB: 0,
-        // Ti: 0,
         TN: 0,
       };
       let fontName = data.ResourceDict.FontSet[_char.styles.Font].Name
@@ -57,6 +53,7 @@ export class Curves {
         glyphs[fontName] = TyprU.stringToGlyphs(font, text)
       }
       var glyph = glyphs[fontName]
+      // 字符对应的code
         , gl = TyprU.codeToGlyph(font, _char.value.charCodeAt(0));
       if (_char.value == "\n")
         _char.glyph = -1;
@@ -230,7 +227,7 @@ export class Curves {
     this.rect = new Rect;
     this.rd = new Rect;
     this.loca = new Loca(0, 0);
-    var prop = Tysh.getProperties(data, lengthArray)
+    var prop = tysh.getProperties(data, lengthArray)
       , runLengthArray = data.EngineDict.ParagraphRun.RunLengthArray
       , length = 0
       , j = 0
@@ -240,7 +237,7 @@ export class Curves {
     for (var i = 0; i < lengthArray; i++)
       length += runLengthArray[i];
     var _ = prop._Direction ? prop._Direction : 0
-      , text = Tysh.getText(data).slice(length, length + runLengthArray[lengthArray])
+      , text = tysh.getText(data).slice(length, length + runLengthArray[lengthArray])
       , v = [];
     var r = [];
     for (var i = 0; i < text.length; i++) {

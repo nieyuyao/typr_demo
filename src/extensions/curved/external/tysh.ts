@@ -14,6 +14,13 @@ class TySh {
     sheet[i] = prop[i]
   }
 
+  /**
+   * 
+   * @param x 水平偏移
+   * @param y 竖直偏移
+   * @param txt 
+   * @returns 
+   */
   public initTySh(x: number, y: number, txt: Txt) {
     const data = this.toObject(this.data);
     if (txt)
@@ -159,6 +166,7 @@ class TySh {
   }
 
   public mapDataRunLengthArray(O: any, i: any, p: any) {
+    // 获取文本
     var V = this.getText(O);
     this.replaceCharNToCharR(O, V.substring(0, i) + V.substring(p, V.length));
     this.addRunLengthArray(O.EngineDict.ParagraphRun, i, p, !0);

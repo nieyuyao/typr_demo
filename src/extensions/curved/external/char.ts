@@ -11,9 +11,6 @@ export class Char {
   public rd!: Rect;
   public loca!: Loca;
   public scale!: Loca;
-  // public NU!: number;
   public lineHeight!: number;
-  // public TB!: number;
-  // public Ti!: number;
   public TN!: number;
 }
