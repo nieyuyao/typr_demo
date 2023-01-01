@@ -143,6 +143,7 @@ const CText = fabric.util.createClass(fabric.IText, {
   },
 
   _render(ctx: CanvasRenderingContext2D) {
+    debugger
     this._uppercase(this.originalText || '');
     this._setCurvedText(ctx);
     this.callSuper('_render', ctx);

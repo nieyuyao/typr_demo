@@ -1,7 +1,7 @@
-import 'fabric';
 import { fabric } from 'fabric';
 import curved from './curved';
 import { Txt } from './curved/external/txt';
+
 declare global {
   namespace fabric {
     interface CurvedTextOptions extends CorjlTextOptions {
@@ -12,6 +12,10 @@ declare global {
       reverse?: boolean;
       uppercase?: boolean;
       meta?: any;
+      warpStyle?: string;
+      warpValue?: number;
+      warpPerspective?: number;
+      warpPerspectiveOther?: number;
     }
   }
 }
@@ -29,15 +33,25 @@ class CorjlCurvedText extends fabric.IText {
 
   reverse = false;
 
-  letters!: fabric.Group;
-
   uppercase?: boolean;
 
   meta: any;
 
   originalText?: string;
 
-  _isRendering = 0;
+  warpStyle?: string;
+
+  warpValue?: number;
+
+  warpPerspective?: number;
+
+  warpPerspectiveOther?: number;
+
+  // @ts-ignore
+  stateProperties = fabric.Object.prototype.cacheProperties.concat('warpStyle', 'warpValue', 'warpPerspective', 'warpPerspectiveOther');
+
+  // @ts-ignore
+  cacheProperties = fabric.Object.prototype.cacheProperties.concat('warpStyle', 'warpValue', 'warpPerspective', 'warpPerspectiveOther')
 
   constructor(text: string, options?: fabric.CurvedTextOptions) {
     super(text, options);
@@ -54,6 +68,10 @@ class CorjlCurvedText extends fabric.IText {
       this.originalText = text;
       _options.originalText = text;
     }
+    this.warpStyle = options?.warpStyle ?? 'warpCircle2'
+    this.warpValue = options?.warpValue ?? 0
+    this.warpPerspective = options?.warpPerspective ?? 0
+    this.warpPerspectiveOther = options?.warpPerspectiveOther ?? 0;
     // @ts-ignore
     super.initialize(text, options);
     if (this.canvas) this.canvas.requestRenderAll();
@@ -105,7 +123,7 @@ class CorjlCurvedText extends fabric.IText {
   }
 
   // 复写Fabric的方法
-  async _renderChar(method: any, ctx: CanvasRenderingContext2D, lineIndex: any, charIndex: any, _char: any, left: any, top: any) {
+  async _renderChar(method: any, ctx: CanvasRenderingContext2D, lineIndex: any, charIndex: any, _char: any) {
     // load font
     ctx.save();
     const font = await curved.load("fonts/Siyuan.ttf");
@@ -114,10 +132,10 @@ class CorjlCurvedText extends fabric.IText {
     let txt = new Txt();
     curved.initTySh(x, y, txt);
     let obj = {
-      warpStyle: 'warpCircle',
-      warpValue: 100,
-      warpPerspective: 0,
-      warpPerspectiveOther: 0
+      warpStyle: this.warpStyle,
+      warpValue: this.warpValue,
+      warpPerspective: this.warpPerspective,
+      warpPerspectiveOther: this.warpPerspectiveOther
     }
     curved.onChangeTySh(obj);
     const fonts: any = {};
@@ -145,7 +163,8 @@ class CorjlCurvedText extends fabric.IText {
     return super.toObject([
       'uppercase', 'meta',
       'originalText', 'radius', 'range',
-      'spacing', 'reverse', 'curvedType'
+      'spacing', 'reverse', 'curvedType',
+      'warpStyle', 'warpValue', 'warpPerspective', 'warpPerspectiveOther'
     ].concat(propertiesToInclude || []));
   }
 }

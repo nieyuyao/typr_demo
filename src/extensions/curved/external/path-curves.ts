@@ -16,6 +16,7 @@ export class PathCurves {
       pathCurves = warp.bezierCurveTo(pathCurves, Math.min(rect.w, rect.h) / 8);
       var E = Tysh.getRect(tySh, curves)
         , u = warp.warpStyle(tySh.ct, E);
+      // 对字形应用变形
       warp.apply(u, pathCurves.b, E)
       // @ts-ignore
       window.warpPoints = u;

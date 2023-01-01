@@ -53,6 +53,7 @@ class Warp {
       // uv坐标
       var z = (i[y] - V) * u
         , _ = (i[y + 1] - E) * F;
+      // O为控制点
       this.dW(O, z, _, m);
       i[y] = m[8];
       i[y + 1] = m[9]
@@ -62,35 +63,42 @@ class Warp {
 
   /**
    * 根据网格变形来计算字体轮廓坐标
-   * @param O 网格坐标
-   * @param i 点的x坐标
-   * @param p 点的y坐标
-   * @param V 
+   * @param controls 网格坐标
+   * @param u 点的x坐标
+   * @param v 点的y坐标
+   * @param arr 计算结果收集器
    */
-  public dW(O: any, i: any, p: any, V: any) {
-    this.Ki(V, 0, p);
-    this.Ki(V, 4, i);
-    this.il(O, V)
+  public dW(controls: any, u: any, v: any, arr: any) {
+    this.Ki(arr, 0, v);
+    this.Ki(arr, 4, u);
+    this.il(controls, arr)
   }
 
-  public Ki(O: any, i: any, p: any) {
+  public Ki(arr: any, i: any, p: any) {
     var V = 1 - p;
-    O[i] = V * (V * V);
-    O[i + 1] = 3 * p * (V * V);
-    O[i + 2] = 3 * (p * p) * V;
-    O[i + 3] = p * p * p
+    arr[i] = V * (V * V);
+    arr[i + 1] = 3 * p * (V * V);
+    arr[i + 2] = 3 * (p * p) * V;
+    arr[i + 3] = p * p * p
   }
 
+  /**
+   * @param O controls
+   * @param i arr，包含了控制点
+   */
   public il(O: any, i: any) {
     var p = 0
       , V = 0
       , E = 0;
+    
     E = i[0] * i[4];
     p += O[0] * E;
     V += O[1] * E;
+
     E = i[0] * i[5];
     p += O[2] * E;
     V += O[3] * E;
+
     E = i[0] * i[6];
     p += O[4] * E;
     V += O[5] * E;

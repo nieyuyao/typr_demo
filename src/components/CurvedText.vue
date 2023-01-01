@@ -1,11 +1,6 @@
 <template>
   <div>
-    <!-- <input type="checkbox" name="" id="" @change="changeColor" /> -->
-    <label for="">Uppercase</label>
-    <input type="checkbox" v-model="uppercase" @change="changeUppercase" />
-    <label for="Curved text">Curved text</label>
-    <input type="checkbox" v-model="curved" @change="changeCurvedText" />
-    <input type="range" id="volume" name="volume" min="-180" max="180" v-model="degrees" @change="changeCurvedText" />
+    <input type="range" id="volume" name="volume" min="-100" max="100" v-model="degrees" @change="changeCurvedText" />
     <canvas id="canvas" width="800" height="800"></canvas>
   </div>
 </template>
@@ -52,29 +47,26 @@ export default {
       }
       canvas.value.requestRenderAll();
     }
-    const changeCurvedText = () => {
+    const changeCurvedText = (event: Event) => {
       const obj =  canvas.value.getActiveObject();
       if(obj) {
         // @ts-ignore
-        obj.set('curvedType', 'circle')
-        // @ts-ignore
-        obj.set('degrees', degrees.value)
-        // @ts-ignore
-        obj.set('curved', curved.value)
-
+        obj.set('warpValue', (event.target as HTMLInputElement).value)
       }
       canvas.value.requestRenderAll();
     }
     onMounted(() => {
       canvas.value.setWidth(800);
       canvas.value.setHeight(800);
-      const text1 = new fabric.CJCurvedText('请输入文字把', {
+      const text1 = new fabric.CJCurvedText('请输入文字', {
         top: 200,
         left: 200,
         fontSize: 32,
         fontFamily: 'DejaVuSans',
         fontWeight: 'bold',
-        textAlign: 'center'
+        textAlign: 'center',
+        warpValue: 100,
+        warpPerspective: 30,
       })
       // @ts-ignore
       canvas.value.add(text1);
