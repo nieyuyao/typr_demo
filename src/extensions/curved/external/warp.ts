@@ -41,20 +41,20 @@ class Warp {
    * 根据变形后的网格调整点集坐标
    * @param O 
    * @param i 
-   * @param p 
+   * @param rect bounding rect
    */
-  public apply(O: any, i: any, p: any) {
-    var V = p.x
-      , E = p.y
-      , u = 1 / p.w
-      , F = 1 / p.h
+  public apply(controls: any, i: any, rect: any) {
+    var V = rect.x
+      , E = rect.y
+      , u = 1 / rect.w
+      , F = 1 / rect.h
       , m = this.tC;
     for (var y = 0; y < i.length; y += 2) {
       // uv坐标
       var z = (i[y] - V) * u
         , _ = (i[y + 1] - E) * F;
       // O为控制点
-      this.dW(O, z, _, m);
+      this.ffd(controls, z, _, m);
       i[y] = m[8];
       i[y + 1] = m[9]
     }
@@ -68,81 +68,102 @@ class Warp {
    * @param v 点的y坐标
    * @param arr 计算结果收集器
    */
-  public dW(controls: any, u: any, v: any, arr: any) {
-    this.Ki(arr, 0, v);
-    this.Ki(arr, 4, u);
-    this.il(controls, arr)
-  }
-
-  public Ki(arr: any, i: any, p: any) {
-    var V = 1 - p;
-    arr[i] = V * (V * V);
-    arr[i + 1] = 3 * p * (V * V);
-    arr[i + 2] = 3 * (p * p) * V;
-    arr[i + 3] = p * p * p
+  public ffd(controls: any, u: number, v: number, bezierBases: any) {
+    this.calcBezierBase(bezierBases, 0, v);
+    this.calcBezierBase(bezierBases, 4, u);
+    this.transform(controls, bezierBases)
   }
 
   /**
+   * 三阶贝塞尔基
+   * @param arr 
+   * @param i 
+   * @param p 
+   */
+  public calcBezierBase(bezierBases: any, i: number, p: number) {
+    var V = 1 - p;
+    bezierBases[i] = V * (V * V);
+    bezierBases[i + 1] = 3 * p * (V * V);
+    bezierBases[i + 2] = 3 * (p * p) * V;
+    bezierBases[i + 3] = p * p * p
+  }
+
+  /**
+   * 自由变形计算 see: https://sci-hub.se/10.1016/j.cagd.2016.02.020
    * @param O controls
    * @param i arr，包含了控制点
    */
-  public il(O: any, i: any) {
+  public transform(controls: any, bezierBases: any) {
     var p = 0
       , V = 0
       , E = 0;
     
-    E = i[0] * i[4];
-    p += O[0] * E;
-    V += O[1] * E;
+    E = bezierBases[0] * bezierBases[4];
+    p += controls[0] * E;
+    V += controls[1] * E;
 
-    E = i[0] * i[5];
-    p += O[2] * E;
-    V += O[3] * E;
+    E = bezierBases[0] * bezierBases[5];
+    p += controls[2] * E;
+    V += controls[3] * E;
 
-    E = i[0] * i[6];
-    p += O[4] * E;
-    V += O[5] * E;
-    E = i[0] * i[7];
-    p += O[6] * E;
-    V += O[7] * E;
-    E = i[1] * i[4];
-    p += O[8] * E;
-    V += O[9] * E;
-    E = i[1] * i[5];
-    p += O[10] * E;
-    V += O[11] * E;
-    E = i[1] * i[6];
-    p += O[12] * E;
-    V += O[13] * E;
-    E = i[1] * i[7];
-    p += O[14] * E;
-    V += O[15] * E;
-    E = i[2] * i[4];
-    p += O[16] * E;
-    V += O[17] * E;
-    E = i[2] * i[5];
-    p += O[18] * E;
-    V += O[19] * E;
-    E = i[2] * i[6];
-    p += O[20] * E;
-    V += O[21] * E;
-    E = i[2] * i[7];
-    p += O[22] * E;
-    V += O[23] * E;
-    E = i[3] * i[4];
-    p += O[24] * E;
-    V += O[25] * E;
-    E = i[3] * i[5];
-    p += O[26] * E;
-    V += O[27] * E;
-    E = i[3] * i[6];
-    p += O[28] * E;
-    V += O[29] * E;
-    E = i[3] * i[7];
-    p += O[30] * E;
-    V += O[31] * E;
-    i[8] = p;
-    i[9] = V
+    E = bezierBases[0] * bezierBases[6];
+    p += controls[4] * E;
+    V += controls[5] * E;
+
+    E = bezierBases[0] * bezierBases[7];
+    p += controls[6] * E;
+    V += controls[7] * E;
+
+    E = bezierBases[1] * bezierBases[4];
+    p += controls[8] * E;
+    V += controls[9] * E;
+
+    E = bezierBases[1] * bezierBases[5];
+    p += controls[10] * E;
+    V += controls[11] * E;
+
+    E = bezierBases[1] * bezierBases[6];
+    p += controls[12] * E;
+    V += controls[13] * E;
+
+    E = bezierBases[1] * bezierBases[7];
+    p += controls[14] * E;
+    V += controls[15] * E;
+
+    E = bezierBases[2] * bezierBases[4];
+    p += controls[16] * E;
+    V += controls[17] * E;
+
+    E = bezierBases[2] * bezierBases[5];
+    p += controls[18] * E;
+    V += controls[19] * E;
+
+    E = bezierBases[2] * bezierBases[6];
+    p += controls[20] * E;
+    V += controls[21] * E;
+
+    E = bezierBases[2] * bezierBases[7];
+    p += controls[22] * E;
+    V += controls[23] * E;
+
+    E = bezierBases[3] * bezierBases[4];
+    p += controls[24] * E;
+    V += controls[25] * E;
+
+    E = bezierBases[3] * bezierBases[5];
+    p += controls[26] * E;
+    V += controls[27] * E;
+
+    E = bezierBases[3] * bezierBases[6];
+    p += controls[28] * E;
+    V += controls[29] * E;
+    
+    E = bezierBases[3] * bezierBases[7];
+    p += controls[30] * E;
+    V += controls[31] * E;
+
+    bezierBases[8] = p;
+    bezierBases[9] = V;
   }
 
   public checkWarpStyle(O: any) {
@@ -307,7 +328,6 @@ class Warp {
     }
     return F
   }
-  ;
   /**
    * @param O 剖分点数组
    * @param rect 矩形
@@ -376,14 +396,6 @@ class Warp {
               r = (T * J + v - Y * x);
               P = (T * J + v - Y * a);
             }
-            // if (V < 0) {
-            //   var o = j;
-            //   j = D;
-            //   D = o;
-            //   o = r;
-            //   r = -P;
-            //   P = -o
-            // }
           }
           if (p == "warpArc") {
             j = Math.sin(L) * x;
@@ -533,7 +545,6 @@ class Warp {
   }
   
   /**
-   * 
    * @param O 网格
    * @param i 竖直扭曲
    * @param p 水平扭曲
@@ -550,22 +561,24 @@ class Warp {
     for (var y = 0; y < 4; y++)
       for (var E = 0; E < 4; E++) {
         var z = 2 * (4 * y + E)
-          , _ = O[z]
-          , W = O[z + 1];
-        F[E] += _ / 4;
+          , _ = O[z] // x
+          , W = O[z + 1]; // y
+        F[y] += _ / 4; // 平均
         m[E] += W / 4
       }
     for (var y = 0; y < 4; y++)
       for (var E = 0; E < 4; E++) {
-        var G = V[E]
+        var G = V[E],
+            Ti = u[y]
           , z = 2 * (4 * y + E)
-          , _ = O[z]
-          , W = O[z + 1]
-          , J = F[E]
+          , _ = O[z] // x
+          , W = O[z + 1] // y
+          , J = F[y]
           , v = m[E];
-        O[z] = J + G * (_ - J);
+        O[z] = J + Ti * (_ - J);
         O[z + 1] = v + G * (W - v)
       }
+    // TODO:下面这些计算是在调整什么？
     var j = O.slice(0);
     for (var y = 0; y < 4; y++)
       for (var E = 1; E < 3; E++) {
@@ -648,7 +661,6 @@ class Warp {
       }
     this.p_LV(j, O, O, i)
   }
-  ;
 
   public concat(O: any, i: any, p: Path) {
     if (p == null)
@@ -714,8 +726,6 @@ class Warp {
         m = i[E];
         y = i[E + 1];
         E += 2;
-        var N = m - u
-          , T = y - F;
         V.push("C");
         p.push(u, F, m, y, m, y);
         u = m;
@@ -838,10 +848,10 @@ class Warp {
 
   public p_LV(O: any, i: any, p: any, V: any) {
     for (var E = 0; E < O.length; E += 2) {
-      var u = O[E]
-        , F = O[E + 1]
-        , m = i[E]
-        , y = i[E + 1];
+      var u = O[E] // original x
+        , F = O[E + 1] // original y
+        , m = i[E] // warped x
+        , y = i[E + 1]; // warped y
       p[E] = u + (m - u) * V;
       p[E + 1] = F + (y - F) * V
     }

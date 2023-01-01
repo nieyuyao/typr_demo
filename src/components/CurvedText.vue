@@ -65,8 +65,9 @@ export default {
         fontFamily: 'DejaVuSans',
         fontWeight: 'bold',
         textAlign: 'center',
-        warpValue: 100,
-        warpPerspective: 30,
+        warpValue: 10,
+        warpPerspective: 20,
+        warpPerspectiveOther: 100,
       })
       // @ts-ignore
       canvas.value.add(text1);
